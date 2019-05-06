@@ -32,11 +32,16 @@ void ofApp::draw(){
     
     ofPushStyle();
     ofSetColor(70, 70, 70, 100);
-    // 十字の交差線の表示
-    ofDrawLine(0, y_line, ofGetWidth(), y_line);
-    ofDrawLine(x_line, 0, x_line, ofGetHeight());
-    // 中心と的を結ぶ直線
-    ofDrawLine(ofGetWidth()/2, ofGetHeight()/2, x_line, y_line);
+    
+//     十字の交差線の表示
+//    ofDrawLine(0, y_line, ofGetWidth(), y_line);
+    ofDrawLine(0, mouse.y, ofGetWidth(), mouse.y);
+//    ofDrawLine(x_line, 0, x_line, ofGetHeight());
+    ofDrawLine(mouse.x, 0, mouse.x, ofGetHeight());
+    
+//    中心と的を結ぶ直線
+//    ofDrawLine(ofGetWidth()/2, ofGetHeight()/2, x_line, y_line);
+    ofDrawLine(ofGetWidth()/2, ofGetHeight()/2, mouse.x, mouse.y);
     ofPopStyle();
     
     float radian = atan2(dis_x, dis_y);
@@ -58,7 +63,11 @@ void ofApp::draw(){
     
     
     float theta = atan2(-dis_y, dis_x); // -pi ~ pi
-    float _theta = theta + PI; // 範囲を変換 0 ~ 2pi
+//    float _theta = theta + PI; // 範囲を変換 0 ~ 2pi
+    if(theta < 0){
+        theta += 2*PI;
+    }
+    
     float div = 100.0;
     
     if(vib == true){
@@ -66,8 +75,10 @@ void ofApp::draw(){
     ofSetColor(10, 10, 10, 100);
     ofVertex(0, 0);
     for(int i = 0; i < div; i++){
-        float x = r * cos((_theta/div)*i);
-        float y = -r * sin((_theta/div)*i);
+//        float x = r * cos((_theta/div)*i);
+//        float y = -r * sin((_theta/div)*i);
+        float x = r * cos((theta/div)*i);
+        float y = -r * sin((theta/div)*i);
         ofVertex(x, y);
     }
     ofEndShape();
@@ -89,14 +100,12 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    // マウスの動きの反映
-    x_line = x;
-    y_line = y;
+//    マウスの動きの反映
+//    x_line = x;
+//    y_line = y;
     
-//
-//    ofVec2f mouse;
-//    mouse.set(x, y);
-//
+//    .hでofVec2fとし定義している（ラクに表現）
+    mouse.set(x, y);
     
 }
 
